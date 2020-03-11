@@ -96,9 +96,7 @@ type OWMClient struct {
 func NewOWMClient(apiURL, apiKey string) *OWMClient {
 	return &OWMClient{
 		apiURL: strings.Replace(apiURL, "{api-key}", apiKey, 1),
-		client: &http.Client{
-			Timeout: 5 * time.Second,
-		},
+		client: &http.Client{},
 	}
 }
 
