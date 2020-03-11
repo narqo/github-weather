@@ -1,8 +1,10 @@
 # :partly_sunny: Weather Status Widget for GitHub
 
-A silly program to update a Github user's status with current weather.
+![github-weather1](docs/github-weather.png)
 
-![github-weather](docs/github-weather.jpg)
+A silly program to update a GitHub user's status with the current weather:
+
+![github-weather2](docs/github-weather.jpg)
 
 The program retrieves data from [OpenWeather API](https://openweathermap.org). It requires API key,
 that can be obtained for free, following [OpenWeather API documentation][1].
