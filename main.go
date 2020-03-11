@@ -70,20 +70,20 @@ func run(ctx context.Context, args []string) error {
 		return err
 	}
 
-	log.Printf("got owm response: %v\n", wr)
+	log.Printf("got owm response: %+v\n", wr)
 
 	status := ChangeUserStatusInput{
 		ClientMutationID: githubClientID,
 		Emoji:            wr.Emoji(),
 		Message:          wr.String(),
-		ExpiresAt:        time.Now().Add(time.Hour).Add(5 * time.Minute),
+		ExpiresAt:        time.Now().Add(time.Hour).Add(5 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
 	}
 	sr, err := gh.ChangeUserStatus(ctx, status)
 	if err != nil {
 		return err
 	}
 
-	log.Printf("set gh status: %v\n", sr)
+	log.Printf("set gh status: %+v\n", sr)
 
 	return nil
 }
