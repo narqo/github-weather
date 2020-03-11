@@ -2,10 +2,12 @@
 
 A silly program to update a Github user's status with current weather.
 
-Note, the program retrieves data from [OpenWeather API](https://openweathermap.org). It requires OpenWeather API key,
+![github-weather](docs/github-weather.jpg)
+
+The program retrieves data from [OpenWeather API](https://openweathermap.org). It requires API key,
 that can be obtained for free, following [OpenWeather API documentation][1].
 
-To update user's status, the program uses [GitHub's GraphQL API](https://developer.github.com/v4/) and requires API
+To update user's status on GitHub, the program uses [GitHub's GraphQL API](https://developer.github.com/v4/) and requires API
 token with `user` scope.
 
 ## Usage
