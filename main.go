@@ -84,7 +84,7 @@ func run(ctx context.Context, args []string) error {
 		ClientMutationID: githubClientID,
 		Emoji:            wr.Emoji(),
 		Message:          wr.ShortString(),
-		ExpiresAt:        time.Now().Add(time.Hour).Add(5 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
+		ExpiresAt:        time.Now().UTC().Add(30 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
 	}
 	sr, err := gh.ChangeUserStatus(ctx, status)
 	if err != nil {
@@ -261,7 +261,7 @@ func (c *GitHubClient) ChangeUserStatus(ctx context.Context, input ChangeUserSta
 		} `json:"changeUserStatus"`
 	}{}
 	if err := c.run(ctx, req, &resp); err != nil {
-		return ChangeUserStatusResponse{}, err
+		return ChangeUserStatusResponse{}, fmt.Errorf("github API request failed: %w", err)
 	}
 	return resp.ChangeUserStatus.Status, nil
 }
