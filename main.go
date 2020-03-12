@@ -44,11 +44,14 @@ func run(ctx context.Context, args []string) error {
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 
 	var (
+		debug bool
+
 		owmAPIKey string
 		owmQuery  string
 
 		githubAPIToken string
 	)
+	flags.BoolVar(&debug, "debug", false, "Enable debug logging")
 	flags.StringVar(&owmAPIKey, "owm.api-key", "", "OpenWeather API key")
 	flags.StringVar(&owmQuery, "owm.query", "Berlin,de", "OpenWeather API query, city name, state and country code divided by comma")
 
@@ -64,6 +67,11 @@ func run(ctx context.Context, args []string) error {
 
 	owm := NewOWMClient(owmAPIEndpoint, owmAPIKey)
 	gh := NewGitHubClient(githubAPIEndpoint, githubAPIToken)
+	if debug {
+		gh.client.Log = func(s string) {
+			log.Println(s)
+		}
+	}
 
 	wr, err := owm.Weather(ctx, owmQuery)
 	if err != nil {
