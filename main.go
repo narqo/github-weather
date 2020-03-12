@@ -126,7 +126,7 @@ func (wr WeatherResponse) String() string {
 	if wr.Main.Temp > 0 {
 		s.WriteByte('+')
 	}
-	s.WriteString(strconv.FormatFloat(wr.Main.Temp, 'g', 0, 64))
+	s.WriteString(strconv.FormatFloat(wr.Main.Temp, 'f', 0, 64))
 	s.WriteString("°") // WriteString as "degree" is not from ASCII
 
 	return s.String()
