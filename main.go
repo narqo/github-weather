@@ -75,7 +75,7 @@ func run(ctx context.Context, args []string) error {
 	status := ChangeUserStatusInput{
 		ClientMutationID: githubClientID,
 		Emoji:            wr.Emoji(),
-		Message:          wr.String(),
+		Message:          wr.ShortString(),
 		ExpiresAt:        time.Now().Add(time.Hour).Add(5 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
 	}
 	sr, err := gh.ChangeUserStatus(ctx, status)
@@ -116,7 +116,7 @@ type WeatherResponse struct {
 	} `json:"main"`
 }
 
-func (wr WeatherResponse) String() string {
+func (wr WeatherResponse) ShortString() string {
 	var s strings.Builder
 
 	s.WriteString(wr.Name)
@@ -245,7 +245,7 @@ func (c *GitHubClient) ChangeUserStatus(ctx context.Context, input ChangeUserSta
 	req.Var("clientMutationId", input.ClientMutationID)
 	req.Var("emoji", input.Emoji)
 	req.Var("message", input.Message)
-	req.Var("expiresAt", input.ExpiresAt)
+	req.Var("expiresAt", input.ExpiresAt.Truncate(time.Second))
 
 	resp := struct {
 		ChangeUserStatus struct {

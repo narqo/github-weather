@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestWeatherResponse_String(t *testing.T) {
+func TestWeatherResponse_ShortString(t *testing.T) {
 	cases := []struct {
 		wr   WeatherResponse
 		want string
@@ -50,8 +50,8 @@ func TestWeatherResponse_String(t *testing.T) {
 
 	for n, tc := range cases {
 		t.Run(fmt.Sprintf("case=%d", n), func(t *testing.T) {
-			if got := tc.wr.String(); got != tc.want {
-				t.Errorf("WeatherResponse.String: want %q, got %q", tc.want, got)
+			if got := tc.wr.ShortString(); got != tc.want {
+				t.Errorf("WeatherResponse.ShortString: want %q, got %q", tc.want, got)
 			}
 		})
 	}
