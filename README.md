@@ -2,7 +2,7 @@
 
 ![github-weather1](docs/github-weather.png)
 
-A silly program to update a GitHub user's status with the current weather:
+A silly program to update your GitHub user's [profile status](https://github.blog/changelog/2019-01-09-set-your-status/) with the current weather:
 
 ![github-weather2](docs/github-weather.jpg)
 
