@@ -24,7 +24,7 @@ $ github-weather -github.token <gh-api-token> -owm.api-key <open-weather-api-tok
 ### Run the program as cronjob
 
 ```
-0 * * * * github-weather [params] 2>> github-weather.log
+*/10 * * * * github-weather [params] 2>> github-weather.log
 ```
 
 See example of a crontab file in the project's `misc` directory.
