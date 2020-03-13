@@ -224,23 +224,25 @@ func NewGitHubClient(apiURL, token string, opts ...graphql.ClientOption) *GitHub
 }
 
 type ChangeUserStatusInput struct {
-	ClientMutationID    string    `json:"clientMutationId"`
-	Emoji               string    `json:"emoji"`
-	ExpiresAt           time.Time `json:"expiresAt"`
-	LimitedAvailability bool      `json:"limitedAvailability"`
-	Message             string    `json:"message"`
-	OrganizationID      string    `json:"organizationId"`
+	ClientMutationID    string    `json:"clientMutationId,omitempty"`
+	Emoji               string    `json:"emoji,omitempty"`
+	ExpiresAt           time.Time `json:"expiresAt,omitempty"`
+	LimitedAvailability bool      `json:"limitedAvailability,omitempty"`
+	Message             string    `json:"message,omitempty"`
+	OrganizationID      string    `json:"organizationId,omitempty"`
 }
 
 type ChangeUserStatusResponse struct {
+	ID        string    `json:"id"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	ExpiresAt time.Time `json:"expiresAt"`
 }
 
 const mutationChangeUserStatus = `
-	mutation ChangeUserStatus($clientMutationId: String!, $emoji: String!, $message: String!, $expiresAt: DateTime) {
-	  changeUserStatus(input: {clientMutationId: $clientMutationId, emoji: $emoji, message: $message, expiresAt: $expiresAt}) {
+	mutation ($status: ChangeUserStatusInput!) {
+	  changeUserStatus(input: $status) {
 		status {
+		  id
 		  updatedAt
 		  expiresAt
 		}
@@ -250,20 +252,23 @@ const mutationChangeUserStatus = `
 
 func (c *GitHubClient) ChangeUserStatus(ctx context.Context, input ChangeUserStatusInput) (ChangeUserStatusResponse, error) {
 	req := graphql.NewRequest(mutationChangeUserStatus)
-	req.Var("clientMutationId", input.ClientMutationID)
-	req.Var("emoji", input.Emoji)
-	req.Var("message", input.Message)
-	req.Var("expiresAt", input.ExpiresAt.Truncate(time.Second))
+	req.Var("status", input)
 
 	resp := struct {
 		ChangeUserStatus struct {
-			Status ChangeUserStatusResponse
+			Status ChangeUserStatusResponse `json:"status"`
 		} `json:"changeUserStatus"`
 	}{}
 	if err := c.run(ctx, req, &resp); err != nil {
 		return ChangeUserStatusResponse{}, fmt.Errorf("github API request failed: %w", err)
 	}
-	return resp.ChangeUserStatus.Status, nil
+
+	status := resp.ChangeUserStatus.Status
+	if status.UpdatedAt.Before(time.Now().UTC().Add(-time.Minute)) {
+		return ChangeUserStatusResponse{}, fmt.Errorf("status not updated, github API respose: %v", resp)
+	}
+
+	return status, nil
 }
 
 func (c *GitHubClient) run(ctx context.Context, req *graphql.Request, resp interface{}) error {
