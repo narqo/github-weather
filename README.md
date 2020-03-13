@@ -1,6 +1,6 @@
 # :partly_sunny: Weather Status Widget for GitHub
 
-![github-weather1](docs/github-weather.png)
+![github-weather1](docs/github-weather-card.jpg)
 
 A silly program to update your GitHub user's [profile status](https://github.blog/changelog/2019-01-09-set-your-status/) with the current weather:
 
