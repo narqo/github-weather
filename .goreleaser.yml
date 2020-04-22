@@ -1,0 +1,27 @@
+env:
+  - GO111MODULE=on
+before:
+  hooks:
+    - go mod download
+builds:
+- env:
+    - CGO_ENABLED=0
+  goos:
+    - linux
+  goarch:
+    - amd64
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+dockers:
+- image_templates:
+  - 'docker.io/angelbarrera92/github-weather:{{ .Tag }}'
+  - 'docker.io/angelbarrera92/github-weather:v{{ .Major }}.{{ .Minor }}'
+  - 'docker.io/angelbarrera92/github-weather:v{{ .Major }}'
+  - 'docker.io/angelbarrera92/github-weather:latest'
+  dockerfile: Dockerfile
+  binaries:
+    - github-weather
+archives:
+- name_template: '{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}'
+  replacements:
+    amd64: x86_64
