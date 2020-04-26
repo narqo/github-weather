@@ -26,7 +26,7 @@ it in the [`cronjob.yaml`](cronjob.yaml) file.
 ```yaml
 containers:
   - name: github-weather
-    image: docker.io/angelbarrera92/github-weather:v1.0.0
+    image: docker.io/varankinv/github-weather:v1.0.0
     command: ["/bin/sh", "-c"]
     args: ["/bin/github-weather --debug --github.token $(GITHUB_TOKEN) --owm.api-key $(OPENWEATHER_API_TOKEN) --owm.query Madrid"]
 ```

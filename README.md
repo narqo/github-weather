@@ -29,4 +29,8 @@ $ github-weather -github.token <gh-api-token> -owm.api-key <open-weather-api-tok
 
 See example of a crontab file in the project's `misc` directory.
 
+### Run the program on Kubernetes
+
+Refer to [deployments/README.md](./deployments/README.md).
+
 [1]: https://openweathermap.org/api
