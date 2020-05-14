@@ -159,7 +159,7 @@ func (wr WeatherResponse) Emoji() string {
 		case 801:
 			return "🌤️"
 		case 802:
-			return ":cloudy:"
+			return ":cloud:"
 		default:
 			return ":partly_sunny:"
 		}
