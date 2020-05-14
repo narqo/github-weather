@@ -159,7 +159,7 @@ func (wr WeatherResponse) Emoji() string {
 		case 801:
 			return "🌤️"
 		case 802:
-			return ":cloudy:"
+			return ":cloud:"
 		default:
 			return ":partly_sunny:"
 		}
@@ -203,7 +203,7 @@ func (c *OWMClient) Weather(ctx context.Context, query string) (WeatherResponse,
 	}
 
 	if wr.Cod != 200 {
-		return WeatherResponse{}, fmt.Errorf("wearther API bad response, for %q: %+v", query, wr)
+		return WeatherResponse{}, fmt.Errorf("weather API bad response, for %q: %+v", query, wr)
 	}
 
 	return wr, nil
@@ -265,7 +265,7 @@ func (c *GitHubClient) ChangeUserStatus(ctx context.Context, input ChangeUserSta
 
 	status := resp.ChangeUserStatus.Status
 	if status.UpdatedAt.Before(time.Now().UTC().Add(-time.Minute)) {
-		return ChangeUserStatusResponse{}, fmt.Errorf("status not updated, github API respose: %v", resp)
+		return ChangeUserStatusResponse{}, fmt.Errorf("status not updated, github API response: %v", resp)
 	}
 
 	return status, nil
