@@ -5,7 +5,7 @@
 You have to create two API tokens:
 
 - Github API token with `user` scope.
-- openWeather API token.
+- OpenWeather API token.
 
 Having these tokens, create a Kubernetes secret as follows:
 

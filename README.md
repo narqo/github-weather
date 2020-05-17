@@ -14,9 +14,13 @@ token with `user` scope.
 
 ## Usage
 
+- Rename the file `temp_config.yml` to `config.yml`
+- Add your GitHub token, OpenWeather API Key to the `config.yml`
+- Add your location to the query property within the `config.yml` 
+- Compile and run the application with following commands:
 ```
-$ go build -o github-weather ./
-$ github-weather -github.token <gh-api-token> -owm.api-key <open-weather-api-token> -owm.query <City>
+$ go build -o github-weather .
+$ ./github-weather
 ```
 
 `github-weather -help` will print the list of all available options.

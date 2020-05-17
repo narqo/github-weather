@@ -1,0 +1,9 @@
+github:
+  clientID: "github/weather"
+  endpoint: "https://api.github.com/graphql"
+  token: ""
+
+owm:
+  api_key: ""
+  endpoint: "https://api.openweathermap.org/data/2.5/weather?appid={api-key}&units=metric"
+  query: "Berlin,De"
