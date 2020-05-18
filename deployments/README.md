@@ -7,36 +7,28 @@ You have to create two API tokens:
 - Github API token with `user` scope.
 - OpenWeather API token.
 
-Having these tokens, create a Kubernetes secret as follows:
-
-```bash
-$ kubectl create secret generic github-weather \
-    --from-literal=github_token=123_YOUR_GITHUB_TOKEN_HERE_321 \
-    --from-literal=openweather_api_token=123_YOUR_OPEN_WEATHER_TOKEN_HERE_321
-secret/github-weather created
-```
-
-*Replace with the correct values*
+Having these tokens, replace the values within the [`secret.yaml`](secret.yaml) accordingly.
 
 ## Customize your city
 
-By default, this cronjob gathers `Madrid` weather information. If you want to use another different city, just change
-it in the [`cronjob.yaml`](cronjob.yaml) file.
+By default, this cronjob gathers `Berlin,De` weather information. If you want to use another different city, just change
+it in the [`secret.yaml`](secret.yaml) file.
 
 ```yaml
-containers:
-  - name: github-weather
-    image: docker.io/varankinv/github-weather:v1.0.0
-    command: ["/bin/sh", "-c"]
-    args: ["/bin/github-weather --debug --github.token $(GITHUB_TOKEN) --owm.api-key $(OPENWEATHER_API_TOKEN) --owm.query Madrid"]
+    expirationTime: 30
+    github:
+      ...
+      ...
+    owm:
+      query: "Cologne,De"
 ```
 
 ## Deploy it
 
-Once the secret is placed in the cluster, deploy the cronjob:
+Once the secret being placed in the cluster, deploy the resources:
 
 ```bash
-$ kubectl apply -f cronjob.yaml
+$ kubectl apply -f deployments/
 ```
 
 It is executed every ten minutes. Wait for it or...
@@ -66,4 +58,3 @@ $ kubectl logs -f job/test
 2020/04/23 12:28:34 << {"data":{"changeUserStatus":{"status":{"id":"1246618","updatedAt":"2020-04-23T12:28:34Z","expiresAt":"2020-04-23T12:58:34Z"}}}}
 2020/04/23 12:28:34 set gh status: {ID:1246618 UpdatedAt:2020-04-23 12:28:34 +0000 UTC ExpiresAt:2020-04-23 12:58:34 +0000 UTC}
 ```
-

@@ -10,9 +10,12 @@ spec:
         spec:
           containers:
           - name: github-weather
-            image: docker.io/varankinv/github-weather:v1.0.0
-            command: ["/bin/sh", "-c"]
-            args: ["/bin/github-weather --debug --github.token $(GITHUB_TOKEN) --owm.api-key $(OPENWEATHER_API_TOKEN) --owm.query Madrid"]
+            image: github-weather-scratch
+            command: ["/bin/github-weather"]
+            args:
+              - "--debug"
+              - "--configuration"
+              - "/secrets/config.yml"
             resources:
               limits:
                 cpu: 100m
@@ -20,15 +23,12 @@ spec:
               requests:
                 cpu: 100m
                 memory: 128Mi
-            env:
-              - name: GITHUB_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: github-weather
-                    key: github_token
-              - name: OPENWEATHER_API_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: github-weather
-                    key: openweather_api_token
+            volumeMounts:
+              - name: config-secret-volume
+                mountPath: "/secrets/"
+                readOnly: true
           restartPolicy: OnFailure
+          volumes:
+            - name: config-secret-volume
+              secret:
+                secretName: gh-config-secret

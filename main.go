@@ -20,7 +20,8 @@ import (
 )
 
 type Config struct {
-	Github struct {
+	ExpirationTime uint8 `yaml:"expirationTime"`
+	Github         struct {
 		ClientID string `yaml:"clientID"`
 		Endpoint string `yaml:"endpoint"`
 		Token    string `yaml:"token"`
@@ -50,16 +51,20 @@ func main() {
 }
 
 func run(ctx context.Context, args []string) error {
-	var debug bool
+	var (
+		debug      bool
+		configPath string
+	)
 
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.BoolVar(&debug, "debug", false, "Enable debug logging")
+	flags.StringVar(&configPath, "configuration", "config.yml", "Path to configuration file")
 
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 
-	f, err := os.Open("config.yml")
+	f, err := os.Open(configPath)
 	if err != nil {
 		return fmt.Errorf("error opening configuration file: %v", err)
 	}
@@ -74,6 +79,10 @@ func run(ctx context.Context, args []string) error {
 
 	if cfg.Owm.ApiKey == "" || cfg.Github.Token == "" {
 		return fmt.Errorf("no API credentials passed: OpenWeather %q, GitHub %q", cfg.Owm.ApiKey, cfg.Github.Token)
+	}
+
+	if cfg.ExpirationTime == 0 {
+		cfg.ExpirationTime = 30
 	}
 
 	owm := NewOWMClient(cfg.Owm.Endpoint, cfg.Owm.ApiKey)
@@ -95,7 +104,7 @@ func run(ctx context.Context, args []string) error {
 		ClientMutationID: cfg.Github.ClientID,
 		Emoji:            wr.Emoji(),
 		Message:          wr.ShortString(),
-		ExpiresAt:        time.Now().UTC().Add(30 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
+		ExpiresAt:        time.Now().UTC().Add(time.Duration(cfg.ExpirationTime) * time.Minute),
 	}
 	sr, err := gh.ChangeUserStatus(ctx, status)
 	if err != nil {

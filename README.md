@@ -13,10 +13,11 @@ To update user's status on GitHub, the program uses [GitHub's GraphQL API](https
 token with `user` scope.
 
 ## Usage
-
-- Rename the file `temp_config.yml` to `config.yml`
-- Add your GitHub token, OpenWeather API Key to the `config.yml`
-- Add your location to the query property within the `config.yml` 
+- Add your desired values for following parameters:
+  - Expiration Time of the new status in minutes (default 30 min, max 255 min)
+  - GitHub Token
+  - OpenWeather API Key
+  - Query location (defaults to Berlin,De)
 - Compile and run the application with following commands:
 ```
 $ go build -o github-weather .
