@@ -14,10 +14,10 @@ token with `user` scope.
 
 ## Usage
 - Add your desired values for following parameters:
-  - Expiration Time of the new status in minutes (default 30 min, max 255 min)
+  - Expiration Time of the new status in minutes (default 30 min, maximum 255 min)
   - GitHub Token
   - OpenWeather API Key
-  - Query location (defaults to Berlin,De)
+  - Query location (default Berlin,De)
 - Compile and run the application with following commands:
 ```
 $ go build -o github-weather .
