@@ -58,7 +58,7 @@ func run(ctx context.Context, args []string) error {
 
 	flags := flag.NewFlagSet("", flag.ExitOnError)
 	flags.BoolVar(&debug, "debug", false, "Enable debug logging")
-	flags.StringVar(&configPath, "configuration", "config.yml", "Path to configuration file")
+	flags.StringVar(&configPath, "configuration", "config.yaml", "Path to configuration file")
 
 	if err := flags.Parse(args); err != nil {
 		return err
