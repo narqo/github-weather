@@ -13,10 +13,15 @@ To update user's status on GitHub, the program uses [GitHub's GraphQL API](https
 token with `user` scope.
 
 ## Usage
-
+- Add your desired values for following parameters:
+  - Expiration Time of the new status in minutes (default 30 min, maximum 255 min)
+  - GitHub Token
+  - OpenWeather API Key
+  - Query location (default Berlin,De)
+- Compile and run the application with following commands:
 ```
-$ go build -o github-weather ./
-$ github-weather -github.token <gh-api-token> -owm.api-key <open-weather-api-token> -owm.query <City>
+$ go build -o github-weather .
+$ ./github-weather
 ```
 
 `github-weather -help` will print the list of all available options.

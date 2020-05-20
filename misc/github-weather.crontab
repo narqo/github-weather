@@ -1,5 +1,1 @@
-GITHUB_TOKEN=
-OWM_API_KEY=
-OWM_QUERY="Berlin,de"
-
-*/10 * * * * /home/pi/github-weather.linux-arm7 -github.token "$GITHUB_TOKEN" -owm.api-key "$OWM_API_KEY" -owm.query "$OWM_QUERY" 2>&1 >> /tmp/github-weather.log
+*/10 * * * * /home/pi/github-weather.linux-arm7

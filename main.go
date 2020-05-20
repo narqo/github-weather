@@ -14,14 +14,24 @@ import (
 	"syscall"
 	"time"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/machinebox/graphql"
 )
 
-const (
-	owmAPIEndpoint    = "https://api.openweathermap.org/data/2.5/weather?appid={api-key}&units=metric"
-	githubAPIEndpoint = "https://api.github.com/graphql"
-	githubClientID    = "github/weather"
-)
+type Config struct {
+	ExpirationTime uint8 `yaml:"expirationTime"`
+	Github         struct {
+		ClientID string `yaml:"clientID"`
+		Endpoint string `yaml:"endpoint"`
+		Token    string `yaml:"token"`
+	} `yaml:"github"`
+	Owm struct {
+		ApiKey   string `yaml:"api_key"`
+		Endpoint string `yaml:"endpoint"`
+		Query    string `yaml:"query"`
+	} `yaml:"owm"`
+}
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
@@ -41,39 +51,49 @@ func main() {
 }
 
 func run(ctx context.Context, args []string) error {
-	flags := flag.NewFlagSet("", flag.ExitOnError)
-
 	var (
-		debug bool
-
-		owmAPIKey string
-		owmQuery  string
-
-		githubAPIToken string
+		debug      bool
+		configPath string
 	)
-	flags.BoolVar(&debug, "debug", false, "Enable debug logging")
-	flags.StringVar(&owmAPIKey, "owm.api-key", "", "OpenWeather API key")
-	flags.StringVar(&owmQuery, "owm.query", "Berlin,de", "OpenWeather API query, city name, state and country code divided by comma")
 
-	flags.StringVar(&githubAPIToken, "github.token", "", "GitHub API token")
+	flags := flag.NewFlagSet("", flag.ExitOnError)
+	flags.BoolVar(&debug, "debug", false, "Enable debug logging")
+	flags.StringVar(&configPath, "configuration", "config.yaml", "Path to configuration file")
 
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 
-	if owmAPIKey == "" || githubAPIToken == "" {
-		return fmt.Errorf("no API credentials passed: OpenWeather %q, GitHub %q", owmAPIKey, githubAPIToken)
+	f, err := os.Open(configPath)
+	if err != nil {
+		return fmt.Errorf("error opening configuration file: %v", err)
+	}
+	defer f.Close()
+
+	var cfg Config
+	dec := yaml.NewDecoder(f)
+	err = dec.Decode(&cfg)
+	if err != nil {
+		return fmt.Errorf("error parsing configuration file: %v", err)
 	}
 
-	owm := NewOWMClient(owmAPIEndpoint, owmAPIKey)
-	gh := NewGitHubClient(githubAPIEndpoint, githubAPIToken)
+	if cfg.Owm.ApiKey == "" || cfg.Github.Token == "" {
+		return fmt.Errorf("no API credentials passed: OpenWeather %q, GitHub %q", cfg.Owm.ApiKey, cfg.Github.Token)
+	}
+
+	if cfg.ExpirationTime == 0 {
+		cfg.ExpirationTime = 30
+	}
+
+	owm := NewOWMClient(cfg.Owm.Endpoint, cfg.Owm.ApiKey)
+	gh := NewGitHubClient(cfg.Github.Endpoint, cfg.Github.Token)
 	if debug {
 		gh.client.Log = func(s string) {
 			log.Println(s)
 		}
 	}
 
-	wr, err := owm.Weather(ctx, owmQuery)
+	wr, err := owm.Weather(ctx, cfg.Owm.Query)
 	if err != nil {
 		return err
 	}
@@ -81,10 +101,10 @@ func run(ctx context.Context, args []string) error {
 	log.Printf("got owm response: %+v\n", wr)
 
 	status := ChangeUserStatusInput{
-		ClientMutationID: githubClientID,
+		ClientMutationID: cfg.Github.ClientID,
 		Emoji:            wr.Emoji(),
 		Message:          wr.ShortString(),
-		ExpiresAt:        time.Now().UTC().Add(30 * time.Minute), // XXX(narqo) status's expiration time is hardcoded
+		ExpiresAt:        time.Now().UTC().Add(time.Duration(cfg.ExpirationTime) * time.Minute),
 	}
 	sr, err := gh.ChangeUserStatus(ctx, status)
 	if err != nil {
