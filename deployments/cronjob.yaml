@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: github-weather
-            image: docker.io/varankinv/github-weather:v1.0.0
+            image: docker.io/varankinv/github-weather:v2.0.0
             command: ["/bin/github-weather"]
             args:
               - "--debug"
