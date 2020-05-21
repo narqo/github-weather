@@ -1,11 +1,9 @@
-expirationTime: 30
+expiration_time: 30
 
 github:
-  clientID: "github/weather"
-  endpoint: "https://api.github.com/graphql"
+  client_id: "github/weather"
   token: "$GITHUB_TOKEN"
 
 owm:
   api_key: "$OPENWEATHER_API_KEY"
-  endpoint: "https://api.openweathermap.org/data/2.5/weather?appid={api-key}&units=metric"
   query: "Berlin,De"
