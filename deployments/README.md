@@ -15,7 +15,7 @@ By default, this cronjob gathers `Berlin,De` weather information. If you want to
 it in the [`secret.yaml`](secret.yaml) file.
 
 ```yaml
-    expirationTime: 30
+    expiration_time: 30
     github:
       ...
       ...
@@ -35,7 +35,7 @@ It is executed every ten minutes. Wait for it or...
 
 ## Test it
 
-Just run 
+Just run
 
 ```bash
 $ kubectl create job test  --from cronjob/github-weather

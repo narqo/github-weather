@@ -1,1 +1,3 @@
-*/10 * * * * /home/pi/github-weather.linux-arm7
+WORKDIR=/home/pi/.local/lib/github-weather
+
+*/10 * * * * $WORKDIR/github-weather.linux-arm7 -configuration $WORKDIR/config.yaml 2>> /tmp/github-weather.log
