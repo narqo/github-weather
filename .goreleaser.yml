@@ -9,16 +9,16 @@ builds:
     - amd64
     - arm
     - arm64
-checksum:
-  name_template: '{{ .ProjectName }}_checksums.txt'
-dockers:
-- image_templates:
-  - 'docker.io/varankinv/github-weather:{{ .Tag }}'
-  - 'docker.io/varankinv/github-weather:latest'
-  dockerfile: Dockerfile
-  binaries:
-    - github-weather
 archives:
 - name_template: '{{ .ProjectName }}_{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
   replacements:
     amd64: x86_64
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+# dockers:
+# - image_templates:
+#   - 'docker.io/varankinv/github-weather:{{ .Tag }}'
+#   - 'docker.io/varankinv/github-weather:latest'
+#   dockerfile: Dockerfile
+#   binaries:
+#     - github-weather
