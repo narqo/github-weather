@@ -1,5 +1,8 @@
 # :partly_sunny: Weather Status Widget for GitHub
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/varankinv/github-weather.svg)](https://hub.docker.com/r/varankinv/github-weather)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/narqi/github-weather/master/LICENSE)
+
 ![github-weather1](docs/github-weather-card.jpg)
 
 A silly program to update your GitHub user's [profile status](https://github.blog/changelog/2019-01-09-set-your-status/) with the current weather:
@@ -37,5 +40,9 @@ See example of a crontab file in the project's `misc` directory.
 ### Run the program on Kubernetes
 
 Refer to [deployments/README.md](./deployments/README.md).
+
+## License
+
+MIT
 
 [1]: https://openweathermap.org/api
