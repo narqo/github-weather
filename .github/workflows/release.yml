@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Setup vars
         id: vars
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/tags/v}
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
 
       - name: Checkout
         uses: actions/checkout@v2
