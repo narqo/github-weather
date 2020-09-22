@@ -10,7 +10,7 @@ spec:
         spec:
           containers:
           - name: github-weather
-            image: docker.io/varankinv/github-weather:v2.0.0
+            image: docker.io/varankinv/github-weather:v3.1.0
             command: ["/bin/github-weather"]
             args:
               - "--debug"
@@ -31,4 +31,4 @@ spec:
           volumes:
             - name: config-secret-volume
               secret:
-                secretName: gh-config-secret
+                secretName: github-weather-config
