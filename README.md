@@ -1,7 +1,7 @@
 # :partly_sunny: Weather Status Widget for GitHub
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/varankinv/github-weather.svg)](https://hub.docker.com/r/varankinv/github-weather)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/narqi/github-weather/master/LICENSE)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/narqo/github-weather/master/LICENSE)
 
 ![github-weather1](docs/github-weather-card.jpg)
 
