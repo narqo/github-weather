@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: github-weather
@@ -18,11 +18,10 @@ spec:
               - "/secrets/config.yaml"
             resources:
               limits:
-                cpu: 100m
                 memory: 128Mi
               requests:
-                cpu: 100m
-                memory: 128Mi
+                cpu: 10m
+                memory: 10Mi
             volumeMounts:
               - name: config-secret-volume
                 mountPath: "/secrets/"
