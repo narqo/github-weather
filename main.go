@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"regexp"
 	"strconv"
 	"strings"
 	"syscall"
@@ -122,9 +123,7 @@ func run(ctx context.Context, args []string) error {
 	owm := NewOWMClient(cfg.OWM.Endpoint, cfg.OWM.ApiKey)
 	gh := NewGitHubClient(cfg.GitHub.Endpoint, cfg.GitHub.Token)
 	if debug {
-		gh.client.Log = func(s string) {
-			log.Println(s)
-		}
+		gh.client.Log = debugLog
 	}
 
 	wr, err := owm.Weather(ctx, cfg.OWM.Query)
@@ -330,4 +329,15 @@ func (c *GitHubClient) run(ctx context.Context, req *graphql.Request, resp inter
 		req.Header.Add("Authorization", "bearer "+c.token)
 	}
 	return c.client.Run(ctx, req, resp)
+}
+
+var redactRe = regexp.MustCompile(`Authorization:\[([^\]]+)\]\s+`)
+
+func debugLog(s string) {
+	if strings.HasPrefix(s, ">> headers:") {
+		if m := redactRe.FindStringIndex(s); m != nil {
+			s = s[:m[0]] + "Authorization:[xxxxx] " + s[m[1]:]
+		}
+	}
+	log.Println(s)
 }
