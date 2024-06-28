@@ -1,4 +1,4 @@
-FROM golang:1.15-alpine as builder
+FROM golang:1.22-alpine as builder
 RUN apk add --update --no-cache build-base ca-certificates
 WORKDIR /go/src/github-weather
 COPY . /go/src/github-weather
